@@ -43,13 +43,9 @@ public class CongTy {
         sta.setInt(1, id); //(thu tu cua bien, bien)
         ResultSet rs  = sta.executeQuery();
         
-        int idcheck;
         if(rs.next()) { //van con du lieu trong database de truy van
-            idcheck = rs.getInt("ID_Nhanvien");
-            if(idcheck == id) {
-                idexist = 0;
-                System.out.println("ID da ton tai !");
-            }
+            idexist = 0;
+            //System.out.println("ID da ton tai !");
         }
         return idexist;
     }
@@ -76,53 +72,46 @@ public class CongTy {
         int id;
         StringBuilder query = new StringBuilder();
         query.append("SELECT *");
-        query.append("FROM NhanVien");
+        query.append("FROM NhanVien, PhongBan, ChiNhanh ");
+        query.append(" WHERE NhanVien.id_phong_ban = PhongBan.ID_PhongBan AND NhanVien.id_chi_nhanh = ChiNhanh.ID_ChiNhanh ");
         
         switch (choice) {
             case 1:
                 // Tim kiem theo ID_Nhanvien
                 id = Integer.parseInt(condition);
-                query.append(" WHERE ID_Nhanvien = ");
+                query.append(" AND ID_Nhanvien = ");
                 query.append(id);
                 break;
             case 2:
                 //Tim kiem theo ten nhan vien
-                //System.out.println("NHAN VIEN CO TEN: " + condition);
-                query.append(" WHERE ten = '");
+                query.append(" AND ten = '");
                 query.append(condition).append("'"); 
                 break;
             case 3:
                 //Tim kiem theo ngay sinh
-                //System.out.println("NHAN VIEN CO NGAY SINH: " + condition);
-                query.append(" WHERE birth = '");
+                query.append(" AND birth = '");
                 query.append(condition).append("'"); 
                 break;
             case 4:
                 //Tim kiem theo ten phong ban
-                //System.out.println("NHAN VIEN CUA PHONG BAN: " + condition);
-                query.append(",PhongBan");
-                query.append(" WHERE NhanVien.id_phong_ban = PhongBan.ID_PhongBan AND Ten_PhongBan = '");
+                query.append(" AND Ten_PhongBan = '");
                 query.append(condition).append("'"); 
                 break;
             case 5:
                 //Tim kiem theo id phong ban
                 id = Integer.parseInt(condition);
-                //System.out.println("NHAN VIEN Co ID PHONG BAN: " + condition);
-                query.append(" WHERE NhanVien.id_phong_ban = ");
+                query.append(" AND NhanVien.id_phong_ban = ");
                 query.append(id);
                 break;
             case 6:
                 //Tim Kiem theo ten chi nhanh
-                //System.out.println("NHAN VIEN CUA CHI NHANH: " + condition);
-                query.append(",ChiNhanh");
-                query.append(" WHERE NhanVien.id_chi_nhanh = ChiNhanh.ID_ChiNhanh AND Ten_ChiNhanh = '");
+                query.append(" AND Ten_ChiNhanh = '");
                 query.append(condition).append("'");
                 break;
             case 7:
                 //Tim kiem theo id phong ban
                 id = Integer.parseInt(condition);
-                //System.out.println("NHAN VIEN Co ID CHI NHANH: " + condition);
-                query.append(" WHERE NhanVien.id_chi_nhanh = ");
+                query.append(" AND NhanVien.id_chi_nhanh = ");
                 query.append(id); 
                 break;
             case 8:
@@ -135,11 +124,12 @@ public class CongTy {
         
         PreparedStatement sta = c.prepareStatement(query.toString());
         ResultSet rs  = sta.executeQuery();
+        
         if(rs.next()) {
-            System.out.println("ID | TEN NHAN VIEN | NGAYSINH");
-            while(rs.next()) {
-                System.out.println(rs.getInt("ID_Nhanvien") + " | " + rs.getString("ten") + " | " + rs.getDate("birth"));
-            }
+            System.out.println("ID | TEN NHAN VIEN | NGAYSINH | PHONG BAN | CHI NHANH");
+            do {
+                System.out.println(rs.getInt("ID_Nhanvien") + " | " + rs.getString("ten") + " | " + rs.getDate("birth") + " | " + rs.getString("Ten_PhongBan") + " | " + rs.getString("Ten_ChiNhanh"));
+            } while(rs.next());
         }
         else System.out.println("KHONG CO THONG TIN PHU HOP VOI DU LIEU BAN NHAP!");
     }
@@ -181,10 +171,10 @@ public class CongTy {
         }
         query.append(" WHERE ID_Nhanvien = ");
         query.append(id);
-        
+
         PreparedStatement sta = c.prepareStatement(query.toString());
         sta.executeUpdate();
-        
+
         c.close();
         sta.close();
     }
@@ -221,13 +211,9 @@ public class CongTy {
         sta.setInt(1, id); //(thu tu cua bien, bien)
         ResultSet rs  = sta.executeQuery();
         
-        int idcheck;
         if(rs.next()) { //van con du lieu trong database de truy van
-            idcheck = rs.getInt("ID_ChiNhanh");
-            if(idcheck == id) {
-                idexist = 0;
-                System.out.println("ID da ton tai !");
-            }
+            idexist = 0;
+            //System.out.println("ID da ton tai !");
         }
         return idexist;
     }    
@@ -291,13 +277,9 @@ public class CongTy {
         sta.setInt(1, id); //(thu tu cua bien, bien)
         ResultSet rs  = sta.executeQuery();
         
-        int idcheck;
         if(rs.next()) { //van con du lieu trong database de truy van
-            idcheck = rs.getInt("ID_PhongBan");
-            if(idcheck == id) {
-                idexist = 0;
-                System.out.println("ID da ton tai !");
-            }
+            idexist = 0;
+            //System.out.println("ID da ton tai !");
         }
         return idexist;
     }
